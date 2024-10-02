@@ -6,5 +6,4 @@
 ```bash
 cd aiffel
 git clone https://github.com/HoChangLee98/dlthon_team5.git
-ln -s ~/data/ ~/aiffel/dlthon_team5
 ```
