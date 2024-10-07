@@ -199,13 +199,13 @@ def transformer(vocab_size,
       dropout=dropout,
     )(inputs=[inputs, enc_padding_mask])
     
-    pooled_outputs = tf.keras.layers.GlobalAveragePooling1D()(enc_outputs)
-    pooled_outputs = tf.keras.layers.Dropout(rate=dropout)(pooled_outputs)
+    flatten_outputs = tf.keras.layers.TimeDistributed(tf.keras.layers.Dense(512, activation='relu'))(enc_outputs)  # 각 시퀀스에 Dense 적용
+    flatten_outputs = tf.keras.layers.Dropout(rate=dropout)(flatten_outputs)
     
     # encoder output size = (batch_size, sentence_length, embedding_dim)
     # 분류 문제를 위한 완전 연결층
     # 완전연결층
-    outputs = tf.keras.layers.Dense(units=512, activation='relu', name="linear_hidden_layer")(pooled_outputs)
+    outputs = tf.keras.layers.Dense(units=256, activation='relu', name="linear_hidden_layer")(flatten_outputs)
     outputs = tf.keras.layers.Dense(units=5, activation='softmax', name="outputs")(outputs)
 
     return tf.keras.Model(inputs=inputs, outputs=outputs, name=name)
